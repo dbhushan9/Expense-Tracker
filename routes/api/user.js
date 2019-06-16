@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
+const validateRegisterinput = require('../../validation/registration');
+const validateLoginInput = require('../../validation/login');
 const keys = require('../../config/keys');
 const User = require('../../models/User');
 
@@ -18,7 +20,10 @@ router.post('/test', (req, res) => res.json({ msg: 'User API' }));
 //@access Public
 router.post('/register', (req, res) => {
   //validate
-  const errors = {};
+  const { errors, isValid } = validateRegisterinput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
   User.findOne({ username: req.body.username }).then(user => {
     if (user) {
       errors.username = 'username is taken';
@@ -49,7 +54,10 @@ router.post('/register', (req, res) => {
 //@access Public
 router.post('/login', (req, res) => {
   //Validate
-  const errors = {};
+  const { errors, isValid } = validateLoginInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
   const username = req.body.username;
   const password = req.body.password;
   User.findOne({ username }).then(user => {
