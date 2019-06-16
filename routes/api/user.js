@@ -70,9 +70,14 @@ router.post('/login', (req, res) => {
             name: user.name
           };
           //sign payload
-          jwt.sign(payload, keys.secretOrKey, (er, token) => {
-            return res.json({ success: 'true', token: 'bearer ' + token });
-          });
+          jwt.sign(
+            payload,
+            keys.secretOrKey,
+            { expiresIn: 604800 },
+            (er, token) => {
+              return res.json({ success: 'true', token: 'Bearer ' + token });
+            }
+          );
         } else {
           errors.password = 'password is incorrect';
           return res.status(400).json(errors);
