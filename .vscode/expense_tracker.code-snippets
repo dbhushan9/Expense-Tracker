@@ -18,6 +18,7 @@
   "add api documentation": {
     "scope": "javascript",
     "prefix": "desc",
-    "body": ["//@route api/", "//@desc ", "//@access "]
+    "body": ["//@route api/", "//@desc ", "//@access "],
+    "description": "add api documentation"
   }
 }
